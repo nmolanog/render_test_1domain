@@ -1,0 +1,125 @@
+.App{
+/* border: 5px solid red; */
+ margin-left: 2%;
+ margin-right: 2%;
+}
+
+.Home{
+    /* border: 5px solid yellow; */
+    margin-bottom: 5%;
+}
+
+.OutletContainer{
+    /* border: 5px solid green; */
+}
+
+.EmptyDivHeader{
+    height: 90px;
+    /* border: 5px solid orange; */
+}
+
+.Menubar {
+    /*border: 5px solid purple;*/
+    border-style: dotted;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    right: 0;
+}
+
+.FormLabel {
+    display: inline-block;
+    min-width: 220px;
+    margin-right: 10px;
+}
+
+.FormField {
+    display: inline-block;
+    max-width: 250px;
+}
+
+.FormContainer {
+    /*border: 5px solid white;*/
+    max-width: 500px;
+    margin: auto
+}
+
+.FormButtonContainer {
+    /*border: 5px solid white;*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin-top: 10px;
+}
+
+.InputEnrollContainer {
+    /* border: 5px solid rgb(24, 90, 231); */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: flex-start;
+}
+
+.CommitSummaryContainer {
+    /*border: 5px solid rgb(230, 173, 17);*/
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+
+.FormContainerEnroll {
+    /* border: 5px solid white; */
+    min-width: 300px;
+    margin: auto 1%;
+}
+
+.TableStudents{
+    max-width: 1200px;
+    margin: auto;
+}
+
+.TablePrograms{
+    max-width: 600px;
+    margin: auto;
+}
+
+.TableEnrolls{
+    max-width: 1300px;
+    margin: auto;
+}
+
+.TableCommits{
+    max-width: 900px;
+    margin: auto;
+}
+
+.radioField{
+    max-width: 150px;
+    margin: 10px auto;
+}
+
+.RadioFormLabel {
+    display: inline-block;
+    max-width: 70px;
+    margin-right: 10px;
+}
+
+.FormLabelQuery {
+    display: inline-block;
+    max-width: 70px;
+    margin-right: 10px;
+}
+
+.QueryContainer{
+    /*border: 5px solid rgb(204, 21, 21);*/
+    display: inline-block;
+    max-width: 400px;
+    margin-left: 20%;
+}
+
+.CommitsHeader{
+    display: flex;
+    justify-content: space-between;
+}

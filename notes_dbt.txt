@@ -1,0 +1,6 @@
+psql -d postgres -U me
+\c postgres
+drop database sgr1;
+
+
+sudo -u postgres psql postgres
