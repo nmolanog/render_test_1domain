@@ -72,4 +72,5 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Hi there: Server running on port ${PORT}`);
     console.log(`production state ${isProduction}`);
+    console.log(`get process.env.TZ: ${process.env.TZ}`);
 }).setTimeout(5000); // Set timeout to 5 seconds (can be increased if needed)
