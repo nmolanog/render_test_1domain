@@ -4,10 +4,13 @@ import { Column } from 'primereact/column';
 import CommitEnrollment from './commitEnrollment.js';
 import DeleteEnrollment from './deleteEnrollment.js';
 import { format } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz';
 
 export default function TableEnrollments({ enrollments = [], clearsearch = () => {}}) {
     const dateBodyTemplate = (rowData, field) => {
-        return format(new Date(rowData[field]), 'MM/dd/yyyy');
+        const utcDate = new Date(rowData[field]);
+        const zonedDate = toZonedTime(utcDate, 'UTC');
+        return format( zonedDate, 'MM/dd/yyyy');
       };
 
     return (
