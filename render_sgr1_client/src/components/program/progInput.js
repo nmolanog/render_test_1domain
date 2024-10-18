@@ -14,7 +14,7 @@ export default function ProgInput() {
 
     const getPrograms = async () => {
         try {
-            const response = await fetch("/program",
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/program`,
                 {
                     method: "GET",
                     headers: { "Content-Type": "application/json" },
@@ -49,7 +49,7 @@ export default function ProgInput() {
             if (programs.some((data) => data.name === formData.name)) {
                 throw new Error('Program already exists!');
             }
-            const response = await fetch("/program/insert",
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/program/insert`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },

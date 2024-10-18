@@ -14,7 +14,7 @@ export default function SedStudent() {
 
     const getAllstudents = async () => {
         try {
-            const response = await fetch("/student",
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/student`,
                 {
                     method: "GET",
                     headers: { "Content-Type": "application/json" },
@@ -59,7 +59,7 @@ export default function SedStudent() {
         }
         try {
             const params = new URLSearchParams({ attribute: stuAtrrib, query: stuQuery });
-            const response = await fetch(`/student/search?${params}`,
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/student/search?${params}`,
                 {
                     method: "GET",
                     headers: { "Content-Type": "application/json" },

@@ -62,7 +62,7 @@ export default function Appointments() {
     useEffect(() => {
         const getAppointments = async () => {
             try {
-                const responseAppointments = await fetch(`/appointment/search4commit_id/${commit_id}`,
+                const responseAppointments = await fetch(`${process.env.REACT_APP_API_URL}/appointment/search4commit_id/${commit_id}`,
                     {
                         method: "GET",
                         headers: { "Content-Type": "application/json" },
@@ -89,7 +89,7 @@ export default function Appointments() {
         const getAppointmentsDates = async () => {
             if (appointment.length > 0) {
                 try {
-                    const responseAppoDates = await fetch(`/appointment/searchallappo/${appointment[0].enroll_id}`,
+                    const responseAppoDates = await fetch(`${process.env.REACT_APP_API_URL}/appointment/searchallappo/${appointment[0].enroll_id}`,
                         {
                             method: "GET",
                             headers: { "Content-Type": "application/json" },
@@ -177,7 +177,7 @@ export default function Appointments() {
         //post request
         try {
 
-            const response = await fetch("/appointment/insert",
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/appointment/insert`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -191,7 +191,7 @@ export default function Appointments() {
             }
 
             if (formData.end_commit === "yes") {
-                const response2 = await fetch(`/commitment/end/${commit_id}`,
+                const response2 = await fetch(`${process.env.REACT_APP_API_URL}/commitment/end/${commit_id}`,
                     {
                         method: "PUT",
                         headers: { "Content-Type": "application/json" },
@@ -206,7 +206,7 @@ export default function Appointments() {
             }
 
             if (formData.end_commit === "yes" && appointment[0].duration === appointment[0].commit_num) {
-                const response3 = await fetch(`/enrollment/end/${appointment[0].enroll_id}`,
+                const response3 = await fetch(`${process.env.REACT_APP_API_URL}/enrollment/end/${appointment[0].enroll_id}`,
                     {
                         method: "PUT",
                         headers: { "Content-Type": "application/json" },
@@ -252,7 +252,7 @@ export default function Appointments() {
                 end_commit: unfulfilledForm.end_commit
             };
 
-            const response = await fetch(`/appointment/fullfile/${unfulfilledApoIds}`,
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/appointment/fullfile/${unfulfilledApoIds}`,
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
@@ -265,7 +265,7 @@ export default function Appointments() {
             }
 
             if (unfulfilledForm.end_commit === "yes") {
-                const response2 = await fetch(`/commitment/edit/${commit_id}`,
+                const response2 = await fetch(`${process.env.REACT_APP_API_URL}/commitment/edit/${commit_id}`,
                     {
                         method: "PUT",
                         headers: { "Content-Type": "application/json" },
@@ -280,7 +280,7 @@ export default function Appointments() {
             }
 
             if (unfulfilledForm.end_commit === "yes" && appointment[0].duration === appointment[0].commit_num) {
-                const response3 = await fetch(`/enrollment/edit/${appointment[0].enroll_id}`,
+                const response3 = await fetch(`${process.env.REACT_APP_API_URL}/enrollment/edit/${appointment[0].enroll_id}`,
                     {
                         method: "PUT",
                         headers: { "Content-Type": "application/json" },

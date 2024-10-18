@@ -16,7 +16,7 @@ const SearchProgForEnroll = ({ value, onSelect }) => {
             const params = new URLSearchParams({ query: inputValue });
 
             // Fetch data using fetch API
-            const response = await fetch(`/program/search4enroll?${params}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/program/search4enroll?${params}`, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include"

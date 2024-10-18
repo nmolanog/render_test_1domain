@@ -18,7 +18,7 @@ const Login = ({ authStatus, setAuthStatus }) => {
         e.preventDefault();
 
         try {
-            const response = await fetch("/auth/login", {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -31,7 +31,7 @@ const Login = ({ authStatus, setAuthStatus }) => {
 
             if (response.ok) {
                 // Refetch authentication status after login
-                const authResponse = await fetch("/auth/status", {
+                const authResponse = await fetch(`${process.env.REACT_APP_API_URL}/auth/status`, {
                     credentials: "include",  // Important for session handling
                 });
                 const authData = await authResponse.json();

@@ -27,7 +27,7 @@ export default function DeleteAppo(props) {
 
         //put request
         try {
-            const response = await fetch(`/appointment/deactivate/${appointment.apo_id}`,
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/appointment/deactivate/${appointment.apo_id}`,
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },

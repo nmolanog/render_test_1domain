@@ -12,7 +12,7 @@ export default function DeleteEnrollment(props) {
         setIsModalOpen(true);
         try {
             // check if program has enrollments
-            const responseNumAppo = await fetch(`/enrollment/appointmentsnum/${enroll.enroll_id}`,
+            const responseNumAppo = await fetch(`${process.env.REACT_APP_API_URL}/enrollment/appointmentsnum/${enroll.enroll_id}`,
                 {
                     method: "GET",
                     headers: { "Content-Type": "application/json" },
@@ -43,7 +43,7 @@ export default function DeleteEnrollment(props) {
                 throw new Error('Appointments for this enrollment already exists, cannot delete');
             }
 */
-            const response = await fetch(`/enrollment/deactivate/${enroll.enroll_id}`,
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/enrollment/deactivate/${enroll.enroll_id}`,
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },

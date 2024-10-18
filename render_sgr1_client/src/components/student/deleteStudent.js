@@ -22,7 +22,7 @@ export default function DeleteStudent(props) {
 
         //put request
         try {
-            const response = await fetch(`/student/deactivate/${student.id_stu}`,
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/student/deactivate/${student.id_stu}`,
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },

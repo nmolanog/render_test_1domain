@@ -13,7 +13,7 @@ export default function SedEnrollment() {
 
     const getAllEnrollments = async () => {
         try {
-            const response = await fetch("/enrollment/all",
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/enrollment/all`,
                 {
                     method: "GET",
                     headers: { "Content-Type": "application/json" },
@@ -61,7 +61,7 @@ export default function SedEnrollment() {
         }
         try {
             const params = new URLSearchParams({ attribute: enrollAtrrib, query: enrollQuery });
-            const response = await fetch(`/enrollment/search?${params}`,
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/enrollment/search?${params}`,
                 {
                     method: "GET",
                     headers: { "Content-Type": "application/json" },

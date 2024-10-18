@@ -21,7 +21,7 @@ export default function InputStudents() {
 
     const getstudents = async () => {
         try {
-            const response = await fetch("/student",
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/student`,
                 {
                     method: "GET",
                     headers: { "Content-Type": "application/json" },
@@ -65,7 +65,7 @@ export default function InputStudents() {
             if(formData.priv_mail !== "" && !validateEmail(formData.priv_mail)){
                 throw new Error('Private Email: not a valid email');
             }
-            const response = await fetch("/student/insert",
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/student/insert`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },

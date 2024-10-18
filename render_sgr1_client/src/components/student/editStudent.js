@@ -27,7 +27,7 @@ export default function EditStudent(props) {
         //put request
         try {
             // Check if ID already exists (this need to load availables id's)
-            const responseAllIds = await fetch("/student/allids",
+            const responseAllIds = await fetch(`${process.env.REACT_APP_API_URL}/student/allids`,
                 {
                     method: "GET",
                     headers: { "Content-Type": "application/json" },
@@ -54,7 +54,7 @@ export default function EditStudent(props) {
             }
 
             //copy row to be edited in db
-            const responseCopy = await fetch(`/student/copy/${student.id_stu}`,
+            const responseCopy = await fetch(`${process.env.REACT_APP_API_URL}/student/copy/${student.id_stu}`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -62,7 +62,7 @@ export default function EditStudent(props) {
                 }
             );
             //finally update the row
-            const response = await fetch(`/student/edit/${student.id_stu}`,
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/student/edit/${student.id_stu}`,
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },

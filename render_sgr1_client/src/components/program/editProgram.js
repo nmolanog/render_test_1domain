@@ -15,7 +15,7 @@ export default function EditProgram(props) {
         setIsModalOpen(true);
         try {
             // check if program has enrollments
-            const responseNumEnroll = await fetch(`/program/enrollments/${program.id}`,
+            const responseNumEnroll = await fetch(`${process.env.REACT_APP_API_URL}/program/enrollments/${program.id}`,
                 {
                     method: "GET",
                     headers: { "Content-Type": "application/json" },
@@ -41,7 +41,7 @@ export default function EditProgram(props) {
         //put request
         try {
             // Check if name already exists (this need to load availables names)
-            const responseAllNames = await fetch("/program/allnames",
+            const responseAllNames = await fetch(`${process.env.REACT_APP_API_URL}/program/allnames`,
                 {
                     method: "GET",
                     headers: { "Content-Type": "application/json" },
@@ -66,7 +66,7 @@ export default function EditProgram(props) {
             }
 
             //copy row to be edited in db
-            const responseCopy = await fetch(`/program/copy/${program.id}`,
+            const responseCopy = await fetch(`${process.env.REACT_APP_API_URL}/program/copy/${program.id}`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -74,7 +74,7 @@ export default function EditProgram(props) {
                 }
             );
             //finally update the row
-            const response = await fetch(`/program/edit/${program.id}`,
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/program/edit/${program.id}`,
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },

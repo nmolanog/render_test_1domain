@@ -52,13 +52,13 @@ app.use(passport.session());
 initializePassport();
 
 // Routes
-app.use('/auth', authRoutes);
-app.use('/', genericRoutes);
-app.use('/student', studentRoutes);
-app.use('/program', programRoutes);
-app.use('/enrollment', enrollmentRoutes);
-app.use('/commitment', commitmenttRoutes);
-app.use('/appointment', appointmenttRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api', genericRoutes);
+app.use('/api/student', studentRoutes);
+app.use('/api/program', programRoutes);
+app.use('/api/enrollment', enrollmentRoutes);
+app.use('/api/commitment', commitmenttRoutes);
+app.use('/api/appointment', appointmenttRoutes);
 
 app.use(express.static(path.join(__dirname, 'render_sgr1_client/build')));
 

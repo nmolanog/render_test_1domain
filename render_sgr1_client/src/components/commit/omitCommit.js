@@ -18,7 +18,7 @@ export default function OmitCommit(props) {
     const handleOmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`/commitment/omit/${commit.id}`,
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/commitment/omit/${commit.id}`,
                 {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },

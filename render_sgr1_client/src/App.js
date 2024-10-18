@@ -29,7 +29,7 @@ function App() {
     // Fetch authentication status from the server
     const checkAuthStatus = async () => {
       try {
-        const response = await fetch("/auth/status", {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/auth/status`, {
           credentials: "include",  // Important for session handling
         });
         const data = await response.json();

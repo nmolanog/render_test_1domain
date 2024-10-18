@@ -14,7 +14,7 @@ export default function SedProgram() {
 
     const getAllPrograms = async () => {
         try {
-            const response = await fetch("/program",
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/program`,
                 {
                     method: "GET",
                     headers: { "Content-Type": "application/json" },
@@ -50,7 +50,7 @@ export default function SedProgram() {
         }
         try {
             const params = new URLSearchParams({ attribute: progAtrrib, query: progQuery });
-            const response = await fetch(`/program/search?${params}`,
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/program/search?${params}`,
                 {
                     method: "GET",
                     headers: { "Content-Type": "application/json" },
