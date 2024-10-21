@@ -3,15 +3,10 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import CommitEnrollment from './commitEnrollment.js';
 import DeleteEnrollment from './deleteEnrollment.js';
-import { format } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
+const { utcDate } = require('../../utilities/dateFunctions');
+
 
 export default function TableEnrollments({ enrollments = [], clearsearch = () => {}}) {
-    const dateBodyTemplate = (rowData, field) => {
-        const utcDate = new Date(rowData[field]);
-        const zonedDate = toZonedTime(utcDate, 'UTC');
-        return format( zonedDate, 'MM/dd/yyyy');
-      };
 
     return (
         <div >
@@ -23,9 +18,9 @@ export default function TableEnrollments({ enrollments = [], clearsearch = () =>
                 <Column field="program" header="Program" sortable/>
                 <Column field="duration" header="Duration Mail" sortable/>
                 <Column field="start_date_semester" header="Start date" 
-                body={(rowData) => dateBodyTemplate(rowData, 'start_date_semester')} sortable/>
+                body={(rowData) => utcDate(rowData['start_date_semester'])} sortable/>
                 <Column field="end_date" header="End date"
-                body={(rowData) => dateBodyTemplate(rowData, 'end_date')} sortable/>
+                body={(rowData) => utcDate(rowData[ 'end_date'])} sortable/>
                 <Column field="current_year" header="Current year" sortable/>
                 <Column field="state" header="Status" sortable/>
                 <Column header="" body={(rowData) => <CommitEnrollment data={rowData} clearsearch={clearsearch} />} />

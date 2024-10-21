@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
-import { format } from 'date-fns';
 import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
 import { RadioButton } from 'primereact/radiobutton';
@@ -10,6 +9,7 @@ import { Card } from 'primereact/card';
 import { Dropdown } from 'primereact/dropdown';
 import styles from "../styles.module.css";
 import TableAppointments from "./tableAppointment";
+const { utcDate } = require('../../utilities/dateFunctions');
 
 
 
@@ -324,16 +324,16 @@ export default function Appointments() {
                                 <li>Duration: {appointment[0].duration}</li>
                                 <li>Current year: {appointment[0].current_year}</li>
                                 <li>Status: {appointment[0].enr_state}</li>
-                                <li>Start date: {format(new Date(appointment[0].start_date_semester), 'yyyy-MM-dd')}</li>
-                                <li>End date: {format(new Date(appointment[0].end_date), 'yyyy-MM-dd')}</li>
+                                <li>Start date: {utcDate(appointment[0].start_date_semester)}</li>
+                                <li>End date: {utcDate(appointment[0].end_date)}</li>
                             </ul>
                         </Card>
                         <Card title="Commit">
                             <ul>
                                 <li>Id: {appointment[0].commit_id}</li>
                                 <li>Number: {appointment[0].commit_num}</li>
-                                <li>Due date: {format(new Date(appointment[0].commit_due_date), 'yyyy-MM-dd')}</li>
-                                {maxApoDate ? (<li>max date: {format(new Date(maxApoDate), 'yyyy-MM-dd')}</li>) :
+                                <li>Due date: {utcDate(appointment[0].commit_due_date)}</li>
+                                {maxApoDate ? (<li>min appointment date: {utcDate(maxApoDate)}</li>) :
                                     (<li>max date: loading...</li>)}
                             </ul>
                         </Card>
@@ -365,63 +365,73 @@ export default function Appointments() {
 
     const renderLocNotesUnfullfilled = () => {
         if (unfulfilledForm.fullfiled && unfulfilledForm.fullfiled === "yes") {
-            return (<>
-                <label htmlFor="location">Location:</label>
+            return (
+                <div className={styles.FormContainer}>
+                    <Card>
+                        <div>
+                            <label htmlFor="location" className={styles.FormLabel}>Location:</label>
 
-                <InputText
-                    value={unfulfilledForm.location}
-                    id="location"
-                    name="location"
-                    placeholder="location"
-                    onChange={handleChangeUnfullfiled}
-                    required
-                    autoComplete="off"
+                            <InputText
+                                value={unfulfilledForm.location}
+                                id="location"
+                                name="location"
+                                placeholder="location"
+                                onChange={handleChangeUnfullfiled}
+                                required
+                                autoComplete="off"
 
-                />
+                            />
+                        </div>
 
-                <label htmlFor="obs">Notes:</label>
+                        <div>
+                            <label htmlFor="obs" className={styles.FormLabel}>Notes:</label>
 
-                <InputText
-                    value={unfulfilledForm.obs}
-                    id="obs"
-                    name="obs"
-                    placeholder="notes"
-                    onChange={handleChangeUnfullfiled}
-                    required
-                    autoComplete="off"
+                            <InputText
+                                value={unfulfilledForm.obs}
+                                id="obs"
+                                name="obs"
+                                placeholder="notes"
+                                onChange={handleChangeUnfullfiled}
+                                required
+                                autoComplete="off"
 
-                />
+                            />
+                        </div>
 
 
-                <fieldset>
-                    <legend>End Commitment?</legend>
 
-                    <div>
+                        <fieldset className={styles.radioField}>
+                            <legend>End Commitment?</legend>
 
-                        <RadioButton
-                            inputId="yes"
-                            name="end_commit"
-                            value="yes"
-                            onChange={handleChangeUnfullfiled}
-                            checked={unfulfilledForm.end_commit === 'yes'}
-                        />
+                            <div>
 
-                        <label htmlFor="yes">Yes</label>
-                    </div>
+                                <RadioButton
+                                    inputId="yes"
+                                    name="end_commit"
+                                    value="yes"
+                                    onChange={handleChangeUnfullfiled}
+                                    checked={unfulfilledForm.end_commit === 'yes'}
+                                />
 
-                    <div>
-                        <RadioButton
-                            inputId="no"
-                            name="end_commit"
-                            value="no"
-                            onChange={handleChangeUnfullfiled}
-                            checked={unfulfilledForm.end_commit === 'no'}
-                        />
-                        <label htmlFor="no">No</label>
-                    </div>
+                                <label htmlFor="yes" className={styles.RadioFormLabel}>Yes</label>
+                            </div>
 
-                </fieldset>
-            </>);
+                            <div>
+                                <RadioButton
+                                    inputId="no"
+                                    name="end_commit"
+                                    value="no"
+                                    onChange={handleChangeUnfullfiled}
+                                    checked={unfulfilledForm.end_commit === 'no'}
+                                />
+                                <label htmlFor="no" className={styles.RadioFormLabel}>No</label>
+                            </div>
+
+                        </fieldset>
+                    </Card>
+
+                </div>
+            );
         }
         if (unfulfilledForm.fullfiled &&
             (unfulfilledForm.fullfiled === "cancel_stu" ||
@@ -449,35 +459,38 @@ export default function Appointments() {
     const renderLocNotesCreatAppo = () => {
         if (formData.fullfiled && formData.fullfiled === "yes") {
             return (<>
-                <label htmlFor="location">Location:</label>
+                <div >
+                    <label htmlFor="location" className={styles.FormLabel}>Location:</label>
 
-                <InputText
-                    value={formData.location}
-                    id="location"
-                    name="location"
-                    placeholder="location"
-                    onChange={handleChange}
-                    required
-                    autoComplete="off"
+                    <InputText
+                        value={formData.location}
+                        id="location"
+                        name="location"
+                        placeholder="location"
+                        onChange={handleChange}
+                        required
+                        autoComplete="off"
 
-                />
+                    />
+                </div>
 
-                <label htmlFor="obs">Notes:</label>
+                <div >
+                    <label htmlFor="obs" className={styles.FormLabel}>Notes:</label>
 
-                <InputText
-                    value={formData.obs}
-                    id="obs"
-                    name="obs"
-                    placeholder="notes"
-                    onChange={handleChange}
-                    required
-                    autoComplete="off"
+                    <InputText
+                        value={formData.obs}
+                        id="obs"
+                        name="obs"
+                        placeholder="notes"
+                        onChange={handleChange}
+                        required
+                        autoComplete="off"
 
-                />
+                    />
+                </div>
 
-
-                <fieldset>
-                    <legend>End Commitment?</legend>
+                <fieldset className={styles.radioField}>
+                    <legend>End Commit?</legend>
 
                     <div>
 
@@ -489,7 +502,7 @@ export default function Appointments() {
                             checked={formData.end_commit === 'yes'}
                         />
 
-                        <label htmlFor="yes">Yes</label>
+                        <label htmlFor="yes" className={styles.RadioFormLabel}>Yes</label>
                     </div>
 
                     <div>
@@ -500,7 +513,7 @@ export default function Appointments() {
                             onChange={handleChange}
                             checked={formData.end_commit === 'no'}
                         />
-                        <label htmlFor="no">No</label>
+                        <label htmlFor="no" className={styles.RadioFormLabel}>No</label>
                     </div>
 
                 </fieldset>
@@ -540,33 +553,37 @@ export default function Appointments() {
         }
         if (appointment.length !== 0 && unfullfiledApointment) {
             return (
-                <>
-                    <Card title="Unfullfiled Apointment" className="max-w-md mx-auto p-4">
-                        <form onSubmit={handleSubmitUnfullfiled}>
+                <div className={styles.AppoCreate}>
+                    <div className={styles.FormContainerAppointment}>
+                        <Card title="Unfullfiled Apointment">
+                            <form onSubmit={handleSubmitUnfullfiled}>
 
-                            <legend htmlFor="fullfiled" >Fullfiled?</legend>
+                                <legend htmlFor="fullfiled" >Fullfiled?</legend>
 
-                            <Dropdown
-                                id="fullfiled"
-                                name="fullfiled"
-                                value={unfulfilledForm.fullfiled}
-                                options={fullfiledTypes}
-                                onChange={handleChangeUnfullfiled}  // Handle Dropdown separately
-                                placeholder="Fullfiled?"
-                                className="w-full md:w-14rem"
-                                required
-                            />
+                                <Dropdown
+                                    id="fullfiled"
+                                    name="fullfiled"
+                                    value={unfulfilledForm.fullfiled}
+                                    options={fullfiledTypes}
+                                    onChange={handleChangeUnfullfiled}  // Handle Dropdown separately
+                                    placeholder="Fullfiled?"
+                                    className="w-full md:w-14rem"
+                                    required
+                                />
 
-                            {renderLocNotesUnfullfilled()}
-                            {!(unfulfilledForm.fullfiled === "" || unfulfilledForm.fullfiled === "pending") ?
-                                (<Button type="submit" label="End Appointment" />)
-                                : (<></>)}
+                                {renderLocNotesUnfullfilled()}
+                                {!(unfulfilledForm.fullfiled === "" || unfulfilledForm.fullfiled === "pending") ?
+                                    (
+                                        <div className={styles.FormButtonContainer}>
+                                            <Button type="submit" label="End Appointment" severity="success"/>
+                                        </div>
+                                    )
+                                    : (<></>)}
+                            </form>
+                        </Card>
+                    </div>
 
-
-                        </form>
-                    </Card>
-
-                    <Card title="Summary" className="max-w-md mx-auto p-4">
+                    <Card title="Summary">
                         <ul>
                             {Object.entries(unfulfilledForm).map(([key, value]) => (
                                 <li key={key}>
@@ -577,74 +594,92 @@ export default function Appointments() {
 
                     </Card>
 
-                </>
+                </div>
             );
         } else {
             return (
                 <>
                     <h2>Create appointment</h2>
+
+
                     {!isFormOpen ? (<Button label="Create" onClick={() => setIsFormOpen(true)} />) : (<></>)}
 
                     {isFormOpen ? (
-                        <>
-                            <Card title="Appointment form" className="max-w-md mx-auto p-4">
+                        <div className={styles.AppoCreate}>
+                            <div className={styles.FormContainerAppointment}>
+                                <Card title="Appointment form">
 
-                                <form onSubmit={handleSubmit}>
-                                    <label htmlFor="set_date">Request date:</label>
+                                    <form onSubmit={handleSubmit}>
+                                        <div >
+                                            <label htmlFor="set_date">Request date:</label>
 
-                                    <Calendar
-                                        inputId="set_date"
-                                        name="set_date"
-                                        value={selectedDates.set_date}
-                                        onChange={handleChange}
-                                        dateFormat="yy-mm-dd"
-                                        showIcon
-                                        minDate={new Date(maxApoDate)}
-                                        maxDate={new Date('2030-12-31')}
-                                        required
-                                    />
+                                            <Calendar
+                                                inputId="set_date"
+                                                name="set_date"
+                                                value={selectedDates.set_date}
+                                                onChange={handleChange}
+                                                dateFormat="yy-mm-dd"
+                                                showIcon
+                                                minDate={new Date(maxApoDate)}
+                                                maxDate={new Date('2030-12-31')}
+                                                required
+                                            />
+                                        </div>
 
+                                        <div >
+                                            <label htmlFor="date">Appointment date:</label>
 
-                                    <label htmlFor="date">Appointment date:</label>
+                                            <Calendar
+                                                inputId="date"
+                                                name="date"
+                                                value={selectedDates.date}
+                                                onChange={handleChange}
+                                                dateFormat="yy-mm-dd"
+                                                showIcon
+                                                minDate={selectedDates.set_date}
+                                                maxDate={new Date('2030-12-31')}
+                                                required
+                                            />
+                                        </div>
 
-                                    <Calendar
-                                        inputId="date"
-                                        name="date"
-                                        value={selectedDates.date}
-                                        onChange={handleChange}
-                                        dateFormat="yy-mm-dd"
-                                        showIcon
-                                        minDate={selectedDates.set_date}
-                                        maxDate={new Date('2030-12-31')}
-                                        required
-                                    />
+                                        <div >
+                                            <legend htmlFor="fullfiled" >Fullfiled?</legend>
 
-
-                                    <legend htmlFor="fullfiled" >Fullfiled?</legend>
-
-                                    <Dropdown
-                                        id="fullfiled"
-                                        name="fullfiled"
-                                        value={formData.fullfiled}
-                                        options={fullfiledTypes}
-                                        onChange={handleChange}  // Handle Dropdown separately
-                                        placeholder="Fullfiled?"
-                                        className="w-full md:w-14rem"
-                                        required
-                                    />
-
-
-
-                                    {renderLocNotesCreatAppo()}
-
-                                    {formData.fullfiled !== "" ?
-                                        (<Button type="submit" label="Register Appointment" />)
-                                        : (<></>)}
-                                </form>
+                                            <Dropdown
+                                                id="fullfiled"
+                                                name="fullfiled"
+                                                value={formData.fullfiled}
+                                                options={fullfiledTypes}
+                                                onChange={handleChange}  // Handle Dropdown separately
+                                                placeholder="Fullfiled?"
+                                                className="w-full md:w-14rem"
+                                                required
+                                            />
+                                        </div>
 
 
-                            </Card>
-                            <Card title="Summary" className="max-w-md mx-auto p-4">
+                                        {renderLocNotesCreatAppo()}
+
+                                        {formData.fullfiled !== "" ?
+                                            (
+                                                <>
+                                                    <div className={styles.FormButtonContainer}>
+                                                        <Button label="CANCEL" onClick={closeForm} severity="warning" />
+                                                    </div>
+                                                    <div className={styles.FormButtonContainer}>
+                                                        <Button type="submit" label="Register Appointment" severity="success" />
+                                                    </div>
+                                                </>
+
+                                            )
+                                            : (<></>)}
+                                    </form>
+
+
+                                </Card>
+                            </div>
+
+                            <Card title="Summary" >
                                 <ul>
                                     {Object.entries(formData).map(([key, value]) => (
                                         <li key={key}>
@@ -652,15 +687,9 @@ export default function Appointments() {
                                         </li>
                                     ))}
                                 </ul>
-
-
-                                <Button label="CANCEL!" onClick={closeForm} />
                             </Card>
-                        </>
+                        </div>
                     ) : (<p> </p>)}
-
-
-
                 </>
             );
         }

@@ -123,3 +123,15 @@
     display: flex;
     justify-content: space-between;
 }
+
+.FormContainerAppointment {
+    /* border: 5px solid white; */
+    width: 350px;
+    margin: auto 1%;
+}
+
+.AppoCreate{
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-start;
+}

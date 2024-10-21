@@ -1,4 +1,12 @@
 // dateFunctions.js
+import { format } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz';
+
+const utcDate = (inputDate) => {
+    const utcDate = new Date(inputDate);
+    const zonedDate = toZonedTime(utcDate, 'UTC');
+    return format( zonedDate, 'dd/MM/yyyy');
+  };
 
 // Function to add k years to a given date
 function addYearsToDate(date, k) {
@@ -87,11 +95,12 @@ function calculateYearsPassed(startDate) {
   }
 
 // Export all functions
-module.exports = {
+export {
     addYearsToDate,
     getAdjustedDate,
     formatDateToYYYYMMDD,
     addYearsToDateFormated,
     getAdjustedDateFormated,
-    calculateYearsPassed
+    calculateYearsPassed,
+    utcDate
 };

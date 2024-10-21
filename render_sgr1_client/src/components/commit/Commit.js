@@ -4,10 +4,10 @@ import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import { Calendar } from 'primereact/calendar';
 import { Card } from 'primereact/card';
-import { format } from 'date-fns';
 import TableCommits from "./tableCommit";
 import styles from "../styles.module.css";
 const { getAdjustedDateFormated } = require('../../utilities/dateFunctions');
+const { utcDate } = require('../../utilities/dateFunctions');
 
 
 
@@ -256,11 +256,11 @@ export default function Commit() {
                         <li>Current year: {enrollment.current_year}</li>
                         { // beware dates from db are imported as string in the front end
                             enrollment.start_date_semester ?
-                                (<li>Start date (semester): {format(new Date(enrollment.start_date_semester), 'MM/dd/yyyy')}</li>) :
+                                (<li>Start date (semester): {utcDate(enrollment.start_date_semester)}</li>) :
                                 (<li> Loading enrollment data...</li>)}
 
                         {enrollment.end_date ?
-                            (<li>End date (semester): {format(new Date(enrollment.end_date), 'MM/dd/yyyy')}</li>) :
+                            (<li>End date (semester): {utcDate(enrollment.end_date)}</li>) :
                             (<li> Loading enrollment data...</li>)}
                         <li>State: {enrollment.state}</li>
                     </ul>
@@ -281,7 +281,7 @@ export default function Commit() {
                        
                         <ul>
                             <li>Deffering date: {defferrData.deffering_date_semester && defferrData.deffering_date_semester!=="" ? 
-                            format(new Date(defferrData.deffering_date_semester), 'MM/dd/yyyy'):(<p>Loading...</p>)} </li>
+                            utcDate(defferrData.deffering_date_semester):(<p>Loading...</p>)} </li>
                             <li>Deffer state: {defferrData.deffer_state} </li>
                         </ul>
                        

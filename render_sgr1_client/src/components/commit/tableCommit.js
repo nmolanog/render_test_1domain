@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { format } from 'date-fns';
 import { Button } from 'primereact/button';
 import OmitCommit from './omitCommit';
+const { utcDate } = require('../../utilities/dateFunctions');
 
 export default function TableCommits({ commits = [], omitSent }) {
     const pendingCommits = commits.filter(commit => commit.state === "pending");
@@ -29,7 +29,7 @@ export default function TableCommits({ commits = [], omitSent }) {
     const resultId = minCommit ? minCommit.id : null;
 
     const formatDate = (value) => {
-        return value ? format(new Date(value), 'yyyy-MM-dd') : 'NA';
+        return value ? utcDate(value) : 'NA';
     };
 
     const appointmentView = (rowData) => {

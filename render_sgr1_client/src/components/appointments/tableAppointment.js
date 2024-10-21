@@ -1,13 +1,13 @@
 import React from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { format } from 'date-fns';
 import { Button } from 'primereact/button';
 import DeleteAppo from './deleteAppo.js';
+const { utcDate } = require('../../utilities/dateFunctions');
 
 export default function TableAppointments({ appointment = [],updateForDelete }) {
     const formatDate = (value) => {
-        return value ? format(new Date(value), 'yyyy-MM-dd') : '';
+        return value ? utcDate(value) : '';
     };
 
     return (
