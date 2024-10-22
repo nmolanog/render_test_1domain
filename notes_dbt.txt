@@ -4,3 +4,5 @@ drop database sgr1;
 
 
 sudo -u postgres psql postgres
+
+DROP SCHEMA public CASCADE;
