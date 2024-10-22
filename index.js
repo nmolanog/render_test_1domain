@@ -36,7 +36,7 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24, // 24 hours
         sameSite: isProduction ? "None" : "Lax" // 'None' for cross-origin requests in production, 'Lax' otherwise
         */
-        secure: false
+        secure: true
     }
 }));
 
