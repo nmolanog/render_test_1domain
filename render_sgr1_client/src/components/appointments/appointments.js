@@ -9,6 +9,7 @@ import { Card } from 'primereact/card';
 import { Dropdown } from 'primereact/dropdown';
 import styles from "../styles.module.css";
 import TableAppointments from "./tableAppointment";
+import { toZonedTime } from 'date-fns-tz';
 const { utcDate } = require('../../utilities/dateFunctions');
 
 
@@ -153,13 +154,13 @@ export default function Appointments() {
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === 'set_date') {
-            setSelectedDates({ ...selectedDates, [name]: value, date: value });
-            const formattedDate1 = value.toISOString().split('T')[0];
-            setFormData({ ...formData, [name]: formattedDate1 });
+            setSelectedDates({ ...selectedDates, [name]: toZonedTime(value,'UTC'), date: toZonedTime(value,'UTC') });
+            const formattedDate1 = utcDate(value);
+            setFormData({ ...formData, [name]: formattedDate1, date: formattedDate1});
 
         } else if (name === 'date') {
             setSelectedDates({ ...selectedDates, [name]: value });
-            const formattedDate2 = value.toISOString().split('T')[0];
+            const formattedDate2 = utcDate(value);
             setFormData({ ...formData, [name]: formattedDate2, });
         } else {
             setFormData({ ...formData, [name]: value });
@@ -620,7 +621,7 @@ export default function Appointments() {
                                                 onChange={handleChange}
                                                 dateFormat="yy-mm-dd"
                                                 showIcon
-                                                minDate={new Date(maxApoDate)}
+                                                minDate={toZonedTime(maxApoDate,'UTC')}
                                                 maxDate={new Date('2030-12-31')}
                                                 required
                                             />
