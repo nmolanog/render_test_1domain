@@ -38,7 +38,7 @@ export default function InputProgramForm(props) {
             mode="decimal"
             minFractionDigits={0}
             maxFractionDigits={0}
-            onChange={(e) => props.handleChange({ target: { name: 'duration', value: e.value } })}  // Custom event object
+            onChange={(e) => props.handleChange({ target: { name: 'duration', value: Number(e.value) } })}  // Custom event object
             required
             autoComplete="off"
           />

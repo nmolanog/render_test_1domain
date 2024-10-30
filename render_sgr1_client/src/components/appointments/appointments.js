@@ -7,6 +7,7 @@ import { Calendar } from 'primereact/calendar';
 import { RadioButton } from 'primereact/radiobutton';
 import { Card } from 'primereact/card';
 import { Dropdown } from 'primereact/dropdown';
+import { Checkbox } from 'primereact/checkbox';
 import styles from "../styles.module.css";
 import TableAppointments from "./tableAppointment";
 import { toZonedTime } from 'date-fns-tz';
@@ -57,7 +58,7 @@ export default function Appointments() {
     const [unfullfiledApointment, setUnfullfiledApointment] = useState("");
     const [unfulfilledApoIds, setUnfulfilledApoIds] = useState([]);
     const [unfulfilledForm, setUnfulfilledForm] = useState(emptyUnfullfiledForm);
-
+    const [endEnroll, setEndEnroll] = useState(false);
 
     //get appointments
     useEffect(() => {
@@ -154,13 +155,13 @@ export default function Appointments() {
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === 'set_date') {
-            setSelectedDates({ ...selectedDates, [name]: toZonedTime(value,'UTC'), date: toZonedTime(value,'UTC') });
-            const formattedDate1 = utcDate(value);
-            setFormData({ ...formData, [name]: formattedDate1, date: formattedDate1});
+            setSelectedDates({ ...selectedDates, [name]: value, date: value });
+            const formattedDate1 = value.toISOString().split('T')[0];
+            setFormData({ ...formData, [name]: formattedDate1 });
 
         } else if (name === 'date') {
             setSelectedDates({ ...selectedDates, [name]: value });
-            const formattedDate2 = utcDate(value);
+            const formattedDate2 = value.toISOString().split('T')[0];
             setFormData({ ...formData, [name]: formattedDate2, });
         } else {
             setFormData({ ...formData, [name]: value });
@@ -206,12 +207,11 @@ export default function Appointments() {
                 }
             }
 
-            if (formData.end_commit === "yes" && appointment[0].duration === appointment[0].commit_num) {
+            if ((formData.end_commit === "yes" && appointment[0].duration === appointment[0].commit_num) || endEnroll) {
                 const response3 = await fetch(`${process.env.REACT_APP_API_URL}/enrollment/end/${appointment[0].enroll_id}`,
                     {
                         method: "PUT",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(formData),
                         credentials: "include"
                     }
                 );
@@ -220,6 +220,22 @@ export default function Appointments() {
                     throw new Error('Failed to edit enrrolment.');
                 }
             }
+
+            if (formData.end_commit === "yes" && appointment[0].duration > appointment[0].commit_num && endEnroll) {
+                const response4 = await fetch(`${process.env.REACT_APP_API_URL}/commitment/omitsubsequent/${commit_id}`,
+                    {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        credentials: "include"
+                    }
+                );
+                if (!response4.ok) {
+                    // If the response is not ok, throw an error
+                    throw new Error('Failed to ommit subsequent commits.');
+                }
+            }
+
+
 
             // Show the modal on successful submission
             setIsModalOpen(true);
@@ -266,7 +282,7 @@ export default function Appointments() {
             }
 
             if (unfulfilledForm.end_commit === "yes") {
-                const response2 = await fetch(`${process.env.REACT_APP_API_URL}/commitment/edit/${commit_id}`,
+                const response2 = await fetch(`${process.env.REACT_APP_API_URL}/commitment/end/${commit_id}`,
                     {
                         method: "PUT",
                         headers: { "Content-Type": "application/json" },
@@ -280,18 +296,31 @@ export default function Appointments() {
                 }
             }
 
-            if (unfulfilledForm.end_commit === "yes" && appointment[0].duration === appointment[0].commit_num) {
-                const response3 = await fetch(`${process.env.REACT_APP_API_URL}/enrollment/edit/${appointment[0].enroll_id}`,
+            if ((unfulfilledForm.end_commit === "yes" && appointment[0].duration === appointment[0].commit_num) || endEnroll) {
+                const response3 = await fetch(`${process.env.REACT_APP_API_URL}/enrollment/end/${appointment[0].enroll_id}`,
                     {
                         method: "PUT",
                         headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(tempFormData),
                         credentials: "include"
                     }
                 );
                 if (!response3.ok) {
                     // If the response is not ok, throw an error
                     throw new Error('Failed to edit enrrolment.');
+                }
+            }
+
+            if (unfulfilledForm.end_commit === "yes" && appointment[0].duration > appointment[0].commit_num && endEnroll) {
+                const response4 = await fetch(`${process.env.REACT_APP_API_URL}/commitment/omitsubsequent/${commit_id}`,
+                    {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        credentials: "include"
+                    }
+                );
+                if (!response4.ok) {
+                    // If the response is not ok, throw an error
+                    throw new Error('Failed to ommit subsequent commits.');
                 }
             }
 
@@ -429,6 +458,31 @@ export default function Appointments() {
                             </div>
 
                         </fieldset>
+
+                        {unfulfilledForm.end_commit === 'yes' ? (
+                            <>
+                                <fieldset className={styles.radioField}>
+                                    <legend>End Enroll?</legend>
+
+                                    <div>
+
+                                        <Checkbox
+                                            inputId="endEnrollYes"
+                                            checked={endEnroll} // Controls if the Checkbox is checked based on endEnroll state
+                                            onChange={(e) => setEndEnroll(e.checked)} // Update endEnroll based on checked state
+                                        />
+
+                                        <label htmlFor="endEnrollYes" className={styles.RadioFormLabel}>Yes</label>
+                                    </div>
+
+                                </fieldset>
+
+                                {endEnroll ? (
+                                    <p>Be aware, this action will end this enrollment!</p>
+                                ) : (<></>)}
+                            </>
+                        ) : (<></>)}
+
                     </Card>
 
                 </div>
@@ -519,6 +573,30 @@ export default function Appointments() {
 
                 </fieldset>
 
+                {formData.end_commit === 'yes' ? (
+                    <>
+                        <fieldset className={styles.radioField}>
+                            <legend>End Enroll?</legend>
+
+                            <div>
+
+                                <Checkbox
+                                    inputId="endEnrollYes"
+                                    checked={endEnroll} // Controls if the Checkbox is checked based on endEnroll state
+                                    onChange={(e) => setEndEnroll(e.checked)} // Update endEnroll based on checked state
+                                />
+
+                                <label htmlFor="endEnrollYes" className={styles.RadioFormLabel}>Yes</label>
+                            </div>
+
+                        </fieldset>
+
+                        {endEnroll ? (
+                            <p>Be aware, this action will end this enrollment!</p>
+                        ) : (<></>)}
+                    </>
+                ) : (<></>)}
+
             </>);
         }
         if (formData.fullfiled &&
@@ -576,7 +654,7 @@ export default function Appointments() {
                                 {!(unfulfilledForm.fullfiled === "" || unfulfilledForm.fullfiled === "pending") ?
                                     (
                                         <div className={styles.FormButtonContainer}>
-                                            <Button type="submit" label="End Appointment" severity="success"/>
+                                            <Button type="submit" label="End Appointment" severity="success" />
                                         </div>
                                     )
                                     : (<></>)}
@@ -621,7 +699,7 @@ export default function Appointments() {
                                                 onChange={handleChange}
                                                 dateFormat="yy-mm-dd"
                                                 showIcon
-                                                minDate={toZonedTime(maxApoDate,'UTC')}
+                                                minDate={toZonedTime(maxApoDate, 'UTC')}
                                                 maxDate={new Date('2030-12-31')}
                                                 required
                                             />
@@ -737,6 +815,14 @@ export default function Appointments() {
 
             {
                 appointment.length !== 0 && appointment[0].enroll_id ? (<Link to={`/commit/${appointment[0].enroll_id}`}>Back to commits</Link>) : (<p></p>)
+            }
+            {/*for testing
+            <h1>maxApoDate raw: {new Date(maxApoDate).toString()}</h1>
+            <h1>Test maxApoDate fixed: {toZonedTime(maxApoDate, 'UTC').toString()}</h1>
+            <h1>set_date raw: {selectedDates.set_date.toString()}</h1>
+            <h1>set_date fixed: {toZonedTime(selectedDates.set_date, 'UTC').toString()}</h1>
+            <h1>endEnroll {endEnroll? "yes":"no"}</h1>
+            */
             }
         </div>
     );

@@ -72,15 +72,15 @@ router.get("/search4id/:id", isAuthenticated, async (req, res) => {
 router.put("/end/:id", isAuthenticated, async (req, res) => {
     try {
         const { id } = req.params;
-        const {date} = req.body;
+        const { date } = req.body;
         const query = `UPDATE commitment SET state = 'delivered',deliver_date = $2, timestamp = current_timestamp WHERE id = $1`;
 
         const updateCommit = await pool.query(query, [id, date]);
         res.status(200).json(`commit with id ${id} edited`);
     } catch (err) {
 
-            console.error(err.message);
-            res.status(500).json({ error: "Internal Server Error" });
+        console.error(err.message);
+        res.status(500).json({ error: "Internal Server Error" });
     }
 });
 
@@ -98,13 +98,13 @@ router.put("/update_duedate", isAuthenticated, async (req, res) => {
 
             await pool.query(
                 "UPDATE commitment SET due_date = $1, timestamp = current_timestamp WHERE id = $2",
-                [due_date,id ]
+                [due_date, id]
             );
         }
 
         await pool.query(
             "UPDATE enrollment SET end_date = $1, timestamp = current_timestamp WHERE id = (SELECT enroll_id FROM commitment WHERE id = $2)",
-            [updateArray[updateArray.length - 1].due_date, updateArray[updateArray.length - 1].id ]
+            [updateArray[updateArray.length - 1].due_date, updateArray[updateArray.length - 1].id]
         );
 
         // Commit the transaction
@@ -129,8 +129,28 @@ router.put("/omit/:id", isAuthenticated, async (req, res) => {
         res.status(200).json(`commit with id ${id} omited`);
     } catch (err) {
 
-            console.error(err.message);
-            res.status(500).json({ error: "Internal Server Error" });
+        console.error(err.message);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+//put edit for commits omited due to premature end of enrollment
+router.put("/omitsubsequent/:id", isAuthenticated, async (req, res) => {
+    try {
+        const { id } = req.params;
+        const query = `update commitment b
+set state = 'omited'
+from commitment a
+where b.enroll_id = a.enroll_id 
+  and b.commit_num > a.commit_num
+  and a.id = $1;`;
+
+        const omitCommit = await pool.query(query, [id]);
+        res.status(200).json(`omited subsequent commits sucessfully!`);
+    } catch (err) {
+
+        console.error(err.message);
+        res.status(500).json({ error: "Internal Server Error" });
     }
 });
 
