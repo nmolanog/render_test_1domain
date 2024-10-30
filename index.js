@@ -5,6 +5,7 @@ const MemoryStore = require('memorystore')(session);
 const passport = require("passport");
 const cors= require("cors");
 const initializePassport = require("./passportConfig");
+const path = require('path');
 // Import routes
 const authRoutes = require('./routes/authRoutes');
 const genericRoutes = require('./routes/genericRoutes');
