@@ -1,12 +1,10 @@
 require('dotenv').config();
 const express = require("express");
 const session = require("express-session");
+const MemoryStore = require('memorystore')(session);
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
-const pool = require("./db");
-const bcrypt = require("bcryptjs");
+const cors= require("cors");
 const initializePassport = require("./passportConfig");
-const path = require('path');  // Import path for serving static files
 // Import routes
 const authRoutes = require('./routes/authRoutes');
 const genericRoutes = require('./routes/genericRoutes');
@@ -25,25 +23,20 @@ app.use(express.urlencoded({ extended: true }));
 // Session configuration
 const isProduction = process.env.NODE_ENV === "production";
 
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        /*
-        secure: isProduction && app.get('trust proxy') === 1, // Only secure if in production and using HTTPS
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24, // 24 hours
-        sameSite: isProduction ? "None" : "Lax" // 'None' for cross-origin requests in production, 'Lax' otherwise
-        */
-        secure: isProduction
-    }
-}));
-
 // Trust the proxy (required for HTTPS in environments like Render)
 if (isProduction) {
     app.set('trust proxy', 1); // Trust the first proxy (e.g., Render's load balancer)
 }
+
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    store: new MemoryStore({
+        checkPeriod: 86400000 // prune expired entries every 24h
+      }),
+    cookie: { secure: isProduction } // Set to true if using HTTPS
+}));
 
 // Initialize passport
 app.use(passport.initialize());
