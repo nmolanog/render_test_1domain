@@ -27,6 +27,10 @@ export default function PendingDates() {
         getPendingDates();
     }, []);
 
+    const formatDate = (value) => {
+            return value ? utcDate(value) : '';
+        };
+
     const pendingDatesSummary = () => {
         if (pendingDates.length !== 0) {
             return (
@@ -37,15 +41,16 @@ export default function PendingDates() {
                         <Column field="student_full_name" header="Student Name" sortable />
                         <Column field="student_urmail" header="UR mail" sortable />
                         <Column field="program" header="Program" sortable />
+
                         <Column field="start_date_semester" header="Start date"
-                            body={(rowData) => utcDate(rowData['start_date_semester'])} sortable />
+                         body={(rowData) => formatDate(rowData.start_date_semester)} sortable />
                         <Column field="current_year" header="Current year" sortable />
 
                         <Column field="apo_set_date" header="Request date"
-                            body={(rowData) => utcDate(rowData['start_date_semester'])} sortable />
+                        body={(rowData) => formatDate(rowData.apo_set_date)} sortable />
 
                         <Column field="apo_date" header="appoinment date"
-                            body={(rowData) => utcDate(rowData['start_date_semester'])} sortable />
+                            body={(rowData) => formatDate(rowData.apo_date)} sortable />
 
                     </DataTable>
                 </div>
