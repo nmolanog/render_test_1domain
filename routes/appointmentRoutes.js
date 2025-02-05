@@ -4,6 +4,20 @@ const pool = require('../db');
 const isAuthenticated = require("../middleware/authMiddleware");
 
 //gets
+//get for pending dates
+router.get("/pending", isAuthenticated, async (req, res) => {
+   
+    try {
+        const result = await pool.query(`SELECT student_id, student_full_name,student_urmail,program,start_date_semester,current_year,apo_set_date,apo_date,commit_num 
+            FROM appointment_app
+            WHERE apo_fullfiled = 'pending'`);
+        res.status(200).json(result.rows);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+
 //get handler for appointments associated to commit_id
 router.get("/search4commit_id/:commit_id", isAuthenticated, async (req, res) => {
     const { commit_id } = req.params;

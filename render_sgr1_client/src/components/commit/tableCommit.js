@@ -50,7 +50,7 @@ export default function TableCommits({ commits = [], omitSent }) {
     return (
         <div>
             <h1>Schedule</h1>
-            <DataTable value={commits} >
+            <DataTable value={commits} sortField="commit_num" sortOrder={1}>
                 <Column field="commit_num" header="Number" />
                 <Column field="due_date" header="Due date" body={(rowData) => formatDate(rowData.due_date)} />
                 <Column field="deliver_date" header="Deliver date" body={(rowData) => formatDate(rowData.deliver_date)} />

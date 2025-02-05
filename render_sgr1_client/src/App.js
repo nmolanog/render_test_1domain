@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createBrowserRouter, RouterProvider, createRoutesFromElements, Route, Navigate } from 'react-router-dom';
 import Login from './components/auth/Login';
 import Home from "./components/Home";
+import PendingDates from "./components/PendingDates";
 //import Register from './components/auth/Register';
 import InputStudents from "./components/student/inputstudents";
 import SedStudent from './components/student/sedStudent';
@@ -57,6 +58,7 @@ function App() {
   const authRoutes =
     <>
       <Route path="/" element={<Home authStatus={authStatus} setAuthStatus={setAuthStatus} />} >
+        <Route path="/pendingdates" element={<PendingDates />} />
         <Route path="/changepassword" element={<ChangePassword authStatus={authStatus} setAuthStatus={setAuthStatus} />} />
         <Route path="/inputstudents" element={<InputStudents />} />
         <Route path="/sedstudent" element={<SedStudent />} />
@@ -67,7 +69,7 @@ function App() {
         <Route path="/commit/:enroll_id" element={<Commit />} />
         <Route path="/appointments/:commit_id" element={<Appointments />} />
       </Route>
-      <Route path="*" element={<Navigate to={"/"} />} />
+      <Route path="*" element={<Navigate to={"/pendingdates"} />} />
     </>;
 
   let myroutes;
