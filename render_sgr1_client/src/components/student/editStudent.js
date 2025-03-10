@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import InputStudentForm from "./inputStudentForm";
@@ -101,11 +101,15 @@ export default function EditStudent(props) {
         setFormData({ ...formData, [name]: value });
     };
 
+    useEffect(() => {
+        setFormData(needFormData);
+    }, [props.data, needFormData]);
+
     return (
 
         <div >
 
-            <Button label="Edit" onClick={handleSubmit}/>
+            <Button label="Edit" onClick={handleSubmit} />
 
             <Dialog
                 visible={isModalOpen}
@@ -130,7 +134,7 @@ export default function EditStudent(props) {
                     title={"Edit Student"}
                 />
 
-                <Button onClick={closeModal} label="Close"/>
+                <Button onClick={closeModal} label="Close" />
             </Dialog>
         </div>
 

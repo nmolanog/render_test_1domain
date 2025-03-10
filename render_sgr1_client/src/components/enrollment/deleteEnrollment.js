@@ -28,7 +28,6 @@ export default function DeleteEnrollment(props) {
 
     const closeModal = () => {
         setIsModalOpen(false);
-        props.clearsearch();
     };
 
     //handler for submit delete action

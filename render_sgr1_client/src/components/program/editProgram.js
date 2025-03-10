@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import InputProgramForm from "./inputProgramForm";
@@ -31,7 +31,6 @@ export default function EditProgram(props) {
 
     const closeModal = () => {
         setIsModalOpen(false);
-        props.clearsearch();
     };
 
     //handler for submit Form action
@@ -112,6 +111,10 @@ export default function EditProgram(props) {
         setFormData({ ...formData, [name]: value });
     };
 
+    useEffect(() => {
+        setFormData(needFormData);
+    }, [props.data, needFormData]);
+
     return (
 
         <div >
@@ -137,7 +140,7 @@ export default function EditProgram(props) {
                     handleChange={handleChange}
                     title={"Edit Program"}
                 />
-                <Button onClick={closeModal} label="Close"/>
+                <Button onClick={closeModal} label="Close" />
             </Dialog>
 
         </div>

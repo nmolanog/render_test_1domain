@@ -27,7 +27,6 @@ export default function DeleteProgram(props) {
 
     const closeModal = () => {
         setIsModalOpen(false);
-        props.clearsearch();
     };
 
     //handler for submit delete action
