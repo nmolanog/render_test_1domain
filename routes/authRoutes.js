@@ -5,6 +5,7 @@ const router = express.Router();
 const pool = require('../db');
 const isAuthenticated = require("../middleware/authMiddleware");
 
+/*
 router.post("/register", async (req, res) => {
     const { name, email, password, usertype } = req.body;  // Include usertype
 
@@ -31,7 +32,7 @@ router.post("/register", async (req, res) => {
         res.status(500).send("Server error");
     }
 });
-
+*/
 
 router.post("/login", (req, res, next) => {
     passport.authenticate("local", (err, user, info) => {
