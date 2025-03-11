@@ -11,6 +11,7 @@ export default function SedProgram() {
     const [progAtrrib, setProgAtrrib] = useState("");
     const [progQuery, setProgQuery] = useState("");
     const [programs, setPrograms] = useState([]);
+    const [formSubmitted, setFormSubmitted] = useState(false); //to update table programs upon register
 
     const getAllPrograms = async () => {
         try {
@@ -30,7 +31,8 @@ export default function SedProgram() {
 
     useEffect(() => {
         getAllPrograms();
-    }, []);
+        setFormSubmitted(false);
+    }, [formSubmitted]);
 
     const handleRadioChange = (event) => {
         setProgAtrrib(event.value);
@@ -117,7 +119,11 @@ export default function SedProgram() {
             </Card>
 
             <div className={styles.TablePrograms}>
-                <TablePrograms ED={true} programs={programs} clearsearch={() => setPrograms([])} />
+                <TablePrograms
+                    ED={true}
+                    programs={programs}
+                    setFormSubmitted={setFormSubmitted}
+                />
             </div>
 
             <Button onClick={() => setPrograms([])} label="Clear Search" />

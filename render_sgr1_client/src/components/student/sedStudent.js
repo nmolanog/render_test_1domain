@@ -11,6 +11,7 @@ export default function SedStudent() {
     const [stuAtrrib, setStuAtrrib] = useState("");
     const [stuQuery, setStuQuery] = useState("");
     const [students, setStudents] = useState([]);
+    const [formSubmitted, setFormSubmitted] = useState(false); //to update table student upon register
 
     const getAllstudents = async () => {
         try {
@@ -31,7 +32,8 @@ export default function SedStudent() {
 
     useEffect(() => {
         getAllstudents();
-    }, []);
+        setFormSubmitted(false);
+    }, [formSubmitted]);
 
     const attrSearchTypes = [
         { label: "ID", value: "id" },
@@ -111,7 +113,11 @@ export default function SedStudent() {
                 </form>
             </Card>
             <div className={styles.TableStudents}>
-                <TableStudents ED={true} students={students} clearsearch={() => setStudents([])} />
+                <TableStudents
+                    ED={true}
+                    students={students}
+                    setFormSubmitted={setFormSubmitted}
+                />
             </div>
             <div className={styles.FormButtonContainer}>
                 <Button onClick={() => setStudents([])} label="Clear Search" />

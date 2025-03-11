@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import InputProgramForm from "./inputProgramForm";
@@ -6,8 +6,17 @@ import InputProgramForm from "./inputProgramForm";
 export default function EditProgram(props) {
     const program = props.data;
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const needFormData = (({ id, name, duration }) =>
-        ({ id, name, duration }))(program);
+    /*
+        const needFormData = (({ id, name, duration }) =>
+            ({ id, name, duration }))(program);
+    */
+    const needFormData = useMemo(() => ({
+        id: program.id,
+        name: program.name,
+        duration: program.duration
+    }), [program]);
+
+
     const [formData, setFormData] = useState(needFormData);
     const [numEnroll, setNumEnroll] = useState([]);
 
@@ -98,6 +107,7 @@ export default function EditProgram(props) {
             }
             alert("Program record updated successfully!");
             closeModal();
+            props.setFormSubmitted(true);
 
         } catch (err) {
             console.error(err.message);
@@ -111,9 +121,10 @@ export default function EditProgram(props) {
         setFormData({ ...formData, [name]: value });
     };
 
+
     useEffect(() => {
         setFormData(needFormData);
-    }, [props.data, needFormData]);
+    }, [needFormData]);
 
     return (
 

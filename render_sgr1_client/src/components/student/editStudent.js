@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
 import InputStudentForm from "./inputStudentForm";
@@ -8,8 +8,20 @@ export default function EditStudent(props) {
     const student = props.data;
     const [isModalOpen, setIsModalOpen] = useState(false);
     //get only fields need for edit
-    const needFormData = (({ id_stu, id, name, last_name, ur_mail, priv_mail, phone }) =>
-        ({ id_stu, id, name, last_name, ur_mail, priv_mail, phone }))(student);
+    /*
+        const needFormData = (({ id_stu, id, name, last_name, ur_mail, priv_mail, phone }) =>
+            ({ id_stu, id, name, last_name, ur_mail, priv_mail, phone }))(student);
+    */
+    const needFormData = useMemo(() => ({
+        id_stu: student.id_stu,
+        id: student.id,
+        name: student.name,
+        last_name: student.last_name,
+        ur_mail: student.ur_mail,
+        priv_mail: student.priv_mail,
+        phone: student.phone
+    }), [student]);
+
     const [formData, setFormData] = useState(needFormData);
 
 
@@ -87,7 +99,7 @@ export default function EditStudent(props) {
             }
             alert("Student record updated successfully!");
             setIsModalOpen(false);
-            props.clearsearch();
+            props.setFormSubmitted(true);
 
         } catch (err) {
             console.error(err.message);
@@ -100,10 +112,10 @@ export default function EditStudent(props) {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
-
+    //update data when sorting
     useEffect(() => {
         setFormData(needFormData);
-    }, [props.data, needFormData]);
+    }, [needFormData]);
 
     return (
 

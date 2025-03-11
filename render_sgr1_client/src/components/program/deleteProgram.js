@@ -53,6 +53,7 @@ export default function DeleteProgram(props) {
                 throw new Error(errorData.error || 'Failed to delete program.');
             }
             alert("Program record deleted successfully!");
+            props.setFormSubmitted(true);
             closeModal();
 
         } catch (err) {

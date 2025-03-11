@@ -36,7 +36,7 @@ export default function DeleteStudent(props) {
             }
             alert("Student record deleted successfully!");
             setIsModalOpen(false);
-            props.clearsearch();
+            props.setFormSubmitted(true);
 
         } catch (err) {
             console.error(err.message);
