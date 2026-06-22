@@ -19,6 +19,8 @@ import 'primereact/resources/primereact.min.css';
 //comment
 
 function App() {
+  const [loading, setLoading] = useState(true);
+
   const [authStatus, setAuthStatus] = useState({
     isAuthenticated: false,
     usertype: null,
@@ -42,11 +44,17 @@ function App() {
         });
       } catch (err) {
         console.error(err);
+      } finally {
+        setLoading(false);  // Mark authentication check as completed
       }
     };
 
     checkAuthStatus();
   }, []);
+
+  if (loading) {
+    return <div>Loading...</div>; // Show a loading indicator while fetching authentication status
+  };
 
   const noAuthRoutes =
     <>
